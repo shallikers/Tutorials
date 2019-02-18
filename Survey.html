@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<Title id="title">Survey Sir Francis Drake</Title>
+
+<style>
+header{
+    background-color: #999;
+    height: 100px;
+    box-sizing:border-box;
+}
+.header-lr{
+    box-sizing:border-box;
+    float: left;
+    height: 100px;
+    width:  20%;
+}
+#header-main{
+    box-sizing:border-box;
+    float: left;
+    text-align:center;
+    width: 60%;
+    height: 100px;
+    margin: 0;
+    vertical-align: middle;
+
+}
+.normaltext {
+    font-size :15px;
+    font-weight: medium;
+    color:#333;
+}
+.heading-text{
+    font-size :30px;
+    font-weight:bolder;
+    color:#222;
+}
+
+.centred{
+    display: block;
+    margin-top: 20px;
+ }
+
+.image{
+    max-height: 100%;
+    box-sizing: border-box;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-width: thick;
+    border-style: groove;
+    border-color: #222;
+}
+
+.fieldset{
+     width: 50%;
+    box-sizing: border-box;
+    float: left;
+    font-weight:lighter;
+}
+.buttons{
+    width: 100%;
+    float: left;
+}
+
+#caption{
+    text-align: center;
+    padding: 10px;   
+}
+
+.survey{
+    color: #222;
+    font-size: 15px;
+    box-sizing:border-box;
+    text-align: left;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    background-color: #CCC;
+    overflow:auto;
+  }
+
+footer{
+    background-color: #999;
+    color: white;
+    font-size: 15px;
+    box-sizing:border-box;
+    text-align: center;
+    font-weight: bold;
+    padding: 15px;
+    width: 100%;
+    overflow:hidden;
+
+}
+
+input:invalid {
+  border: 2px dashed red;
+}
+
+input:valid {
+  border: 2px solid black;
+}
+
+main { 
+    font-family: Arial, Helvetica, sans-serif;
+ 
+}
+
+@media screen and (max-width: 800px) {
+    .header-lr {
+        background-color: blue;
+        display: none;
+    }
+    #header-main{
+        width: 100%;
+    }
+    .fieldset{
+        width: 100%;
+    }
+}
+
+</style>
+</head>
+<main id="main">
+<header>
+    <div id="header-left" class="header-lr">
+        <img src= "images\drakeportrait.jpg" alt= "classic drake portrait" class="image">
+    </div>
+    <div id="header-main">
+        <div class="centred">
+            <span class="heading-text">A Survey About Sir Francis Drake<br></span>
+            <span class="normaltext">Lets hear your opinion</span>
+        </div>
+    </div>
+    <div id="header-right" class="header-lr">
+        <img src= "images\drakeglobe.jpg" alt= "drake by his globe" class="image">
+    </div>
+
+</header>
+<body>
+
+<form id="survey-form" class="survey">
+
+    <div class=fieldset>
+        <fieldset>
+            <legend>Opinion of Drake</legend>
+            <p><input type="radio" name="hero" value="hero" checked> Hero   
+            <input type="radio" name="villain" value="villain" > Villain <br></p>
+            <p>Which of these facts do you think are true about Drake<br>
+            <input type="checkbox" name="explorer" value="explorer"> Drake was a great explorer who sailed around the world<br>
+            <input type="checkbox" name="pirate" value="pirate"> Drake was a pirate who preyed on merchants to line his pockets<br>
+            <input type="checkbox" name="admiral" value="admiral"> Drake is responsibile for preventing the Spanish Armada from conquering Britain<br>
+            </p>
+            
+            <textarea name="message" rows="5" style="width: 100%;">I think...</textarea>
+        </fieldset>
+    </div>
+
+    <div class=fieldset>
+        <fieldset>
+        <legend>Personal information:</legend>
+        <table style="width:100%">
+            <tr>
+                    <td>name:</td>
+                    <td><input type="text" id="name" name="name" required></td>
+            </tr>
+            <tr>
+                <td>email:</td>
+                <td><input type="email" id="email" name="email" required> </td>
+            </tr>
+            <tr>
+                <td>age:</td>
+                <td><input type="number" id = "number" name="age"min="5" max="100" required></td>
+            </tr>
+            <tr>
+                <td>nationality</td>
+                <td>
+                    <select id="dropdown" name="nationality" required>
+                        <option value="english">English</option>
+                        <option value="spanish">Spanish</option>
+                        <option value="european">Other European</option>
+                        <option value="other">Rest of the world</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        </fieldset>
+    </div>   
+    <div class="buttons">
+        <br>
+        <input type="button" value="submit">
+        <input type="reset">
+
+    </div>
+
+</form>
+
+
+</body>
+
+<footer>
+    <div class = "normaltext">
+    <p>Tutorial :<a href="https://learn.freecodecamp.org/responsive-web-design/responsive-web-design-projects/build-a-survey-form" target="_blank"> Survey Form</a></p>
+    </div>
+
+</footer>
+
+
