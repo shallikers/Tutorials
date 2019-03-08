@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <Title id="title">Mine Sweeper</Title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>    
+    </head>
+
+<style>
+    .bold {
+        font-weight: bold;
+    }
+
+    .column {
+    float: left;
+    width: 2vw;
+    padding: 0px;
+    box-sizing: border-box;
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+    content: "";
+    clear: both;
+    display: table;
+    box-sizing: border-box;
+    }
+</style>
+
+
+<body>
+    <div class="container">
+        <div class="page-header">
+        <h1 class="bold">Mine Sweeper Game</h1> 
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <span class="bold"> Instructions </span>
+        </div>
+        <div class="panel-body">
+            <p>Left click to search</p> 
+            <p>Right click to mark as a mine</p> 
+        </div>
+    </div>
+ 
+ 
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <button type="button" class="btn btn-primary" onclick="resetGrid()">New Game  </button>
+            <button type="button" id="timer" class="btn btn-primary disabled">Timer: 00:00</button>
+            <p> </p>
+            <div id="minegrid" class="container" style = "margin: 0vw; padding: 0vw; width: 21vw; border-style: none; border-color: red;">
+
+                <p> place holder text </p>
+
+            </div>
+        </div>
+    </div>
+ 
+
+    <script>
+
+        // variables for the game
+        var rows = 10;
+        var maxRows = 20;
+        var columns = 10;
+        var maxColumns = 20;
+        var maxMines = 15;
+        var htmlText = "";
+        var mineGrid = document.getElementById("minegrid");
+        var newCell;
+        var im;
+        var x,y;
+        var grid = new Array(maxRows);
+        for (i = 0; i<rows; i++){ grid[i] = new Array(maxColumns);}
+
+        // JS script to run
+
+        initGrid();
+
+        // create the board
+        function initGrid(){  // Set up the board for the first play
+
+            mineGrid.innerHTML = ""; // clear out the dummy code
+
+            for (y = 0; y < rows; y++ ) {
+                for (x = 0; x < columns; x++ ) {
+                    newCell = document.createElement("DIV");
+                    newCell.className = "column";
+                    im = document.createElement("IMG");
+                    im.src = "images/BlueSquare.jpg";
+ //                   im.src = "C:\\Users\\User\\Documents\\GitHub\\Tutorials\\images\\BlueSquare.jpg";
+                    im.style = "width:100%";
+                    im.addEventListener("mouseover", mOver);
+                    im.addEventListener("mouseout", mOut);
+                    im.addEventListener("click",function() { mClick(event.currentTarget) });
+
+                    // properties of the cell for the game minesweeper
+                    im.xx = x;  // x coord
+                    im.yy = y;  // y coord
+                    im.finalSrc = ""; // the image of what is in the cell
+                    im.proxCount = 0; // number of adjacent mines
+                    im.revealed = false;
+                    im.empty = true;
+
+                    // add the new objects into the html
+                    newCell.appendChild(im);
+                    mineGrid.appendChild(newCell);
+
+                    // store the cell in the grid
+                    grid[x][y] = im;
+                }
+            }
+        }
+ 
+        // grid cell click functions
+        function mOver() {
+            event.currentTarget.src = "images\\HLBlueSquare.jpg";
+
+            }      
+        function mOut() {
+            event.currentTarget.src = "images\\BlueSquare.jpg";
+        
+        }
+        function mClick(obj) {
+            event.currentTarget.src = "images\\ClickSquare.jpg";
+            event.currentTarget.removeEventListener("mouseout", mOut) ;
+            event.currentTarget.removeEventListener("mouseover", mOver) ;
+        }
+
+        // grid Helper functions
+
+
+
+        // Game set up functions
+        function resetGrid(){  // reset the grid so that there are no mines in it and all the squares look blank
+            for (y = 0; y < rows; y++ ) {
+                for (x = 0; x < columns; x++ ) {
+                    let im = grid[x][y];
+                    im.src = "images\\BlueSquare.jpg";
+    
+                    // properties of the cell for the game minesweeper
+                    im.finalSrc = ""; // the image of what is in the cell
+                    im.proxCount = 0; // number of adjacent mines
+                    im.revealed = false;
+                    im.empty = true;
+                }
+            }
+        }   
+
+        function populateGrid(){  // put all the mines in the grid and update all the proximity counters
+            var minePlaced = 0;
+            var minesToPlace = maxMines;
+        } 
+        
+        // grid game time
+
+
+
+
+
+
+    </script>
+
+</body>
+
