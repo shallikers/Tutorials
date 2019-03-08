@@ -1,10 +1,127 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <Title id="title">Mine Sweeper</Title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>    
-</head>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <Title id="title">Mine Sweeper</Title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>    
+    </head>
+
+<style>
+    .bold {
+        font-weight: bold;
+    }
+
+    .column {
+    float: left;
+    width: 2vw;
+    padding: 0px;
+    box-sizing: border-box;
+    }
+
+    /* Clearfix (clear floats) */
+    .row::after {
+    content: "";
+    clear: both;
+    display: table;
+    box-sizing: border-box;
+    }
+</style>
+
+
+<body>
+    <div class="container">
+        <div class="page-header">
+        <h1 class="bold">Mine Sweeper Game</h1> 
+    </div>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <span class="bold"> Instructions </span>
+        </div>
+        <div class="panel-body">
+            <p>Left click to search</p> 
+            <p>Right click to mark as a mine</p> 
+        </div>
+    </div>
+ 
+ 
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <button type="button" class="btn btn-primary">New Game</button>
+            <button type="button" id="timer" class="btn btn-primary disabled">Timer: 00:00</button>
+            <p> </p>
+            <div id="minegrid" class="container" style = "margin: 0vw; padding: 0vw; width: 21vw; border-style: none; border-color: red;">
+
+
+
+                <div class="row">
+                    <div class="column">
+                        <img onmouseover="mOver(this)" onmouseout="mOut(this)" src="images\BlueSquare.jpg" style="width:100%">
+                    </div>
+                    <div class="column">
+                        <img src="images\BlueSquare.jpg" style="width:100%">
+                    </div>
+                    <div class="column">
+                        <img src="images\BlueSquare.jpg" style="width:100%">
+                    </div>
+                    <div class="column">
+                        <img src="images\BlueSquare.jpg" style="width:100%">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+
+    <script>
+        var rows = 10;
+        var columns = 10;
+        var htmlText = "";
+        var mineGrid = document.getElementById("minegrid");
+        var newCell;
+        var im;
+        var x,y;
+ 
+        mineGrid.innerHTML = "";
+    //    mineGrid.addEventListener("click", function(){ alert("Hello World!"); });
+
+   
+        
+        for (y = 0; y < rows; y++ ) {
+            for (x = 0; x < columns; x++ ) {
+                newCell = document.createElement("DIV");
+                newCell.className = "column";
+                im = document.createElement("IMG");
+                im.src = "images\\BlueSquare.jpg";
+                im.style = "width:100%";
+                im.addEventListener("mouseover", mOver);
+                im.addEventListener("mouseout", mOut);
+                im.addEventListener("click",function() { mClick(event.currentTarget) });
+                im.xx = x;
+                im.yy = y;
+                newCell.appendChild(im);
+                mineGrid.appendChild(newCell);
+            }
+        }
+    
+        function mOver() {
+            event.currentTarget.src = "images\\HLBlueSquare.jpg";
+
+            }      
+        function mOut() {
+            event.currentTarget.src = "images\\BlueSquare.jpg";
+        
+        }
+        function mClick(obj) {
+            event.currentTarget.src = "images\\ClickSquare.jpg";
+            event.currentTarget.removeEventListener("mouseout", mOut) ;
+            event.currentTarget.removeEventListener("mouseover", mOver) ;
+        }
+
+    </script>
+
+</body>
+
