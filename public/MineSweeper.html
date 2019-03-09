@@ -18,6 +18,7 @@
     .column {
     float: left;
     width: 2vw;
+    height: 2vw;
     padding: 0px;
     box-sizing: border-box;
     }
@@ -60,6 +61,17 @@
             </div>
         </div>
     </div>
+
+    <footer> 
+        <div id="log">
+            <p> log messages here ... </p>
+        </div>
+
+    </footer>
+    
+
+
+
  
 
     <script>
@@ -76,11 +88,14 @@
         var im;
         var x,y;
         var grid = new Array(maxRows);
+        var logging = true;
         for (i = 0; i<rows; i++){ grid[i] = new Array(maxColumns);}
 
         // JS script to run
 
+        footLog("<p> Init Grid </p>")
         initGrid();
+        resetGrid();
 
         // create the board
         function initGrid(){  // Set up the board for the first play
@@ -119,52 +134,147 @@
  
         // grid cell click functions
         function mOver() {
-            event.currentTarget.src = "images\\HLBlueSquare.jpg";
-
-            }      
+            if (!event.currentTarget.revealed) event.currentTarget.src = "images\\HLBlueSquare.jpg";
+        }      
         function mOut() {
-            event.currentTarget.src = "images\\BlueSquare.jpg";
-        
+            if (!event.currentTarget.revealed) event.currentTarget.src = event.currentTarget.initsrc;
         }
+
         function mClick(obj) {
-            event.currentTarget.src = "images\\ClickSquare.jpg";
-            event.currentTarget.removeEventListener("mouseout", mOut) ;
-            event.currentTarget.removeEventListener("mouseover", mOver) ;
+            footLog("<p> clicked "+ event.currentTarget.xx+","+ event.currentTarget.yy+ "</p>");
+            if (!event.currentTarget.revealed) {
+                click(event.currentTarget.xx, event.currentTarget.yy);
+            }
         }
 
         // grid Helper functions
+        function isMine(x, y) {
+            if(x<0 || x>= columns || y<0 || y >= rows){
+                return false;
+            }
+            else {
+                return grid[x][y].isMine;
+            }
+        }
 
+        function incrementProximity(x,y)
+        {
+//            footLog("<p> increment "+ x +"," + y + " </p>");
+            if(x<0 || x>= columns || y<0 || y >= rows){
+                // do nothing out of range
+                console.log(x+"  "+y);
+            }
+            else
+            {
+
+                
+                grid[x][y].proxCount++;
+            }
+        }
+
+        function setMine(x,y) {
+            if(x<0 || x>= columns || y<0 || y >= rows || grid[x][y].isMine == true){
+                // do nothing out of range
+                return false;
+            }
+            else
+            {
+                grid[x][y].isMine=true;             // there is a mine here
+                grid[x][y].isEmpty = false;         // this cell is not empty
+                for(var i=x-1; i<=x+1; i++){
+                    for(var j=y-1; j<=y+1; j++){
+                        incrementProximity(i,j);     // increment the proximity count
+                        grid[x][y].isEmpty = false;  // this is not a blank cell
+                    }
+                }
+                return true;
+            }
+        }
+
+        // utility functions
+
+        function randomInt(min,max) {   // min and max of the random number generated
+            return Math.floor(Math.random()*(max-min+1)+min);
+        }
+
+        function footLog(text){
+            if (loggin = true) { document.getElementById("log").innerHTML += text; }
+        }
 
 
         // Game set up functions
-        function resetGrid(){  // reset the grid so that there are no mines in it and all the squares look blank
-            for (y = 0; y < rows; y++ ) {
-                for (x = 0; x < columns; x++ ) {
+        function resetGrid(){  
+            // reset the grid so that there are no mines in it and all the squares look blank
+            for (var y = 0; y < rows; y++ ) {
+                for (var x = 0; x < columns; x++ ) {
                     let im = grid[x][y];
-                    im.src = "images\\BlueSquare.jpg";
+                    im.src = "images/unknownSq.jpg";
     
                     // properties of the cell for the game minesweeper
                     im.finalSrc = ""; // the image of what is in the cell
                     im.proxCount = 0; // number of adjacent mines
                     im.revealed = false;
                     im.empty = true;
+                    im.isMine = false;
                 }
             }
-        }   
+            // put the minies on the grid and update the proximity count
 
-        function populateGrid(){  // put all the mines in the grid and update all the proximity counters
             var minePlaced = 0;
             var minesToPlace = maxMines;
+            
+            for(var i=0; i<maxMines; )
+            {
+                if( setMine(randomInt(0,columns), randomInt(0,rows) ) )
+                {
+                    i++;
+                }
+            }
+            // put set the image variables
+            for (var y = 0; y < rows; y++ ) {
+                for (var x = 0; x < columns; x++ ) {
+                    let im = grid[x][y];
+                    im.src = "images/unknownSq.jpg";
+                    im.initsrc= im.src;
+                    if (im.isMine){
+                        im.finalSrc = "images/msq.jpg";
+                    }
+                    else
+                    {
+                        im.finalSrc = "images/"+im.proxCount+"sq.jpg";
+                    }
+                }
+            }
         } 
         
         // grid game time
+        function reveal(x,y)
+        {
+            //footLog("reveal "+ x +"," + y + "  ");
+            if(x<0 || x>= columns || y<0 || y >= rows){
+                // do nothing out of range
+            }
+            else
+            {             
+                grid[x][y].revealed = true;
+                grid[x][y].src = grid[x][y].finalSrc;
+                grid[x][y].removeEventListener("mouseout", mOut) ;
+                grid[x][y].removeEventListener("mouseover", mOver) ;
+            }
+        }
 
-
-
-
-
+        function click(x,y) {
+            for(var i=x-1; i<=x+1; i++){
+                for(var j=y-1; j<=y+1; j++){
+                    reveal(i,j);     // increment the proximity count
+                }
+            }
+            // check for game over
+        }
 
     </script>
 
 </body>
+
+</html>
 
