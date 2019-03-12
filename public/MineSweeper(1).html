@@ -89,21 +89,20 @@
         var x,y;
         var grid = new Array(maxRows);
         var logging = true;
-        var depth;
         for (i = 0; i<rows; i++){ grid[i] = new Array(maxColumns);}
 
         // JS script to run
 
-        footlog("<span> Init Grid ...");
+        footLog("<p> Init Grid </p>");
         initGrid();
-        footlog("<span> Reset Grid ... ");
+        footLog("<p> Reset Grid </p>");
         resetGrid();
 
 
 
         // create the board
         function initGrid(){  // Set up the board for the first play
-            footlog("in...");
+
             mineGrid.innerHTML = ""; // clear out the dummy code
 
             for (y = 0; y < rows; y++ ) {
@@ -129,12 +128,12 @@
                     grid[x][y] = im;
                 }
             }
-            footlog("out <br></span>"); 
+            footLog("<p> finished init <p>"); 
         }
 
         // Game set up functions
         function resetGrid() { 
-            footlog("in ..."); 
+            footLog("<p> reset grid in function<p>"); 
             // reset the grid so that there are no mines in it and all the squares look blank
             for (var y = 0; y < rows; y++ ) {
                 for (var x = 0; x < columns; x++ ) {
@@ -147,7 +146,6 @@
                     im.revealed = false;
                     im.empty = true;
                     im.isMine = false;
-                    im.checked=false;
                 }
             }
 
@@ -162,11 +160,10 @@
                 {
                     i++;
                 }
-                footlog("m");
             }
 
             // put set the image variables
-            footlog("  images ... ");
+            footLog("<p> assinging images <p>");
             for (var y = 0; y < rows; y++ ) {
                 for (var x = 0; x < columns; x++ ) {
                     let im = grid[x][y];
@@ -181,23 +178,22 @@
                     }
                 }
             }
-            footlog("out <br></span>")
         } 
  
         // grid cell click functions
         function mOver() {
-            if (!event.currentTarget.revealed) event.currentTarget.src = "images/HLBlueSquare.jpg"; 
+            if (!event.currentTarget.revealed) event.currentTarget.src = "images\\HLBlueSquare.jpg";
         }      
         function mOut() {
             if (!event.currentTarget.revealed) event.currentTarget.src = event.currentTarget.initsrc;
-         }
+            footLog("<p>" + event.currentTarget.initsrc +"</p>");
+        }
 
         function mClick(obj) {
-            footlog("<span> click");
+            //footLog("<p> clicked "+ event.currentTarget.xx+","+ event.currentTarget.yy+ "</p>");
             if (!event.currentTarget.revealed) {
                 click(event.currentTarget.xx, event.currentTarget.yy);
             }
-            footlog("<br> </span>");
         }
 
         // grid Helper functions
@@ -212,22 +208,18 @@
 
         function incrementProximity(x,y)
         {
-            //footlog("<p> increment "+ x +"," + y + " </p>");
+//            footLog("<p> increment "+ x +"," + y + " </p>");
             if(x<0 || x>= columns || y<0 || y >= rows){
                 // do nothing out of range
-                //footlog("OUT OF RANGE");
+                console.log(x+"  "+y);
             }
             else
             {          
                 grid[x][y].proxCount++;
-                grid[x][y].empty = false;  // this is not a blank cell
-
             }
         }
 
         function setMine(x,y) {
-            
-            //footlog("set mine");
             if(x<0 || x>= columns || y<0 || y >= rows || grid[x][y].isMine == true){
                 // do nothing out of range
                 return false;
@@ -239,6 +231,7 @@
                 for(var i=x-1; i<=x+1; i++){
                     for(var j=y-1; j<=y+1; j++){
                         incrementProximity(i,j);     // increment the proximity count
+                        grid[i][j].empty = false;  // this is not a blank cell
                     }
                 }
                 return true;
@@ -251,7 +244,7 @@
             return Math.floor(Math.random()*(max-min+1)+min);
         }
 
-        function footlog(text){
+        function footLog(text){
             if (loggin = true) { document.getElementById("log").innerHTML += text; }
         }
 
@@ -261,7 +254,7 @@
         // grid game time
         function reveal(x,y)
         {
-            //footlog("reveal "+ x +"," + y + "  ");
+            //footLog("reveal "+ x +"," + y + "  ");
             if(x<0 || x>= columns || y<0 || y >= rows){
                 return true;
             }
@@ -272,72 +265,36 @@
                 grid[x][y].removeEventListener("mouseout", mOut) ;
                 grid[x][y].removeEventListener("mouseover", mOver) ;
             }
-            footlog(""+ grid[x][y].empty+ " " );
+            footLog(""+ grid[x][y].empty+ " " );
             return grid[x][y].empty;
         }
 
         function click(x,y) {
-            //footlog( x+ "," + y+ "  " );
-            reveal(x,y)
-         
-            if(grid[x][y].isMine) 
-            {
-                gameOver(x,y);
-                return;
-            }
-            if(grid[x][y].empty) {
-                var allEmpty = true;
-                for(var i=x-1; i<=x+1; i++){
-                    for(var j=y-1; j<=y+1; j++){
-                        if(!reveal(i,j)){
-                            allEmpty=false;                       
-                        }     
-                    }
-                }
-                if(allEmpty)
-                {
-                    footlog("traverse ...");
-                    depth = 0;
-                    traverse(x,y);
+            footLog("<p> click "+ x+ "," + y+ "  " );
+            var allEmpty = true;
+            for(var i=x-1; i<=x+1; i++){
+                for(var j=y-1; j<=y+1; j++){
+                    if(!reveal(i,j)){;
+                        allEmpty=false;                       
+                    }     
                 }
             }
+            footLog("</p>");
 
+            if(allEmpty)
+            {
+                footLog("<p>Recursing...<p>");
+            // for(var k=x-1; k<=x+1; k++){
+            //     for(var l=y-1; l<=y+1; l++){
+            //         if((k!=x) && (l!=y)) {
+            //             click(k,l);
+            //         }
+            //     }
+            //   }
+            }
 
             // check for game over
         }
-
-        function traverse(a,b) { 
-            footlog("<br>t"+a+b);
-            if (a<0 || a>=columns || b<0 || b>=rows){return;}
-
-            reveal(a,b);
-            if( grid[a][b].checked) {return;}
-            grid[a][b].checked = true;
-            if( !grid[a][b].empty) {return;}
-
-            var c = 0;
-            var d = 0;
-
-            traverse(a+1,b);
-            traverse(a-1,b);
-            traverse(a,b+1);
-            traverse(a,b-1);
-
-            return;
-
-        }
-
-        function gameOver(a,b)
-        {
-            for (var y = 0; y < rows; y++ ) {
-                for (var x = 0; x < columns; x++ ) {
-                    let im = grid[x][y];
-                    im.src = im.finalSrc;
-                }
-            }
-            grid[a][b].src = "images/emsq.jpg"
-        }
-
 
     </script>
 
