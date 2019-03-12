@@ -33,13 +33,13 @@
 </style>
 
 
-<body style = "background-color : #E1EEF2;  ">
+<body oncontextmenu="return false" style = "background-color : #E1EEF2;  ">
     <div style ="padding : 1vw;">
         <div>
             <button type="button" class="btn btn-primary" onclick="resetGrid()">New Game  </button>
             <button type="button" id="timer" class="btn btn-primary disabled">Timer: 00:00.0</button>
             <p> </p>
-            <div id="minegrid" class="container bg-primary" style = "margin: 0vw; padding: 2vw; width: 42vw; border-style: none; border-color: red;">
+            <div id="minegrid" class="container" style = "margin: 0vw; padding: 2vw; width: 42vw; border-style: none; background-color: #337ab7" >
 
                 <p> place holder text </p>
 
@@ -77,7 +77,7 @@
         var depth;
 
         //images
-        var imPath = '/public/images/';
+        var imPath = 'tutorials/public/images/';
         var mineIm = imPath+'msq.jpg';
         var expMineIm = imPath+'emsq.jpg';
         var numberIm = 'sq.jpg';
@@ -116,6 +116,7 @@
                     im.addEventListener("mouseover", mOver);
                     im.addEventListener("mouseout", mOut);
                     im.addEventListener("click",function() { mClick(event.currentTarget) });
+                    im.addEventListener("contextmenu",function() { rClick(event.currentTarget) });
 
                     // properties of the cell for the game minesweeper
                     im.xx = x;  // x coord
@@ -136,6 +137,7 @@
         function resetGrid() { 
             footlog("in ..."); 
             // reset the grid so that there are no mines in it and all the squares look blank
+            document.getElementById("minegrid").style= "margin: 0vw; padding: 2vw; width: 42vw; border-style: none; background-color: #337ab7";
             for (var y = 0; y < rows; y++ ) {
                 for (var x = 0; x < columns; x++ ) {
                     let im = grid[x][y];
@@ -149,6 +151,7 @@
                     im.empty = true;
                     im.isMine = false;
                     im.checked=false;
+                    im.mineMarked = false;
                 }
             }
 
@@ -223,6 +226,29 @@
             }
             footlog("<br> </span>");
         }
+
+        function rClick(obj) {
+            footlog("<span> click");
+            if (!event.currentTarget.revealed && !event.currentTarget.mineMarked) {
+                event.currentTarget.src = mineIm;
+                event.currentTarget.mineMarked = true;
+                event.currentTarget.revealed = true;
+
+            }
+            else
+            if (event.currentTarget.mineMarked){
+                event.currentTarget.src = mOverIm;
+                event.currentTarget.mineMarked = false;
+                event.currentTarget.revealed = false;
+            }
+            checkVictoryMinesMarked();
+            return false;
+        }
+
+
+
+
+
         //Timer
         function myTimer() {
             if (!timerOn) return;
@@ -371,6 +397,20 @@
 
         }
 
+        function checkVictoryMinesMarked()
+        {   
+            for (var y = 0; y < rows; y++ ) {
+                for (var x = 0; x < columns; x++ ) {
+                    let im = grid[x][y];
+                    if((im.mineMarked && !im.isMine) || (!im.mineMarked && im.isMine)) return;
+                }
+            }
+            gameOver(-1,-1);
+            
+            document.getElementById("minegrid").style ="margin: 0vw; padding: 2vw; width: 42vw; border-style: none; background-color: SeaGreen";
+        }
+
+
         function gameOver(a,b)
         {
             for (var y = 0; y < rows; y++ ) {
@@ -380,9 +420,9 @@
                     im.revealed = true;
                 }
             }
-            grid[a][b].src = expMineIm;
-            //myTimer();
+            if ( a>=0 ) grid[a][b].src = expMineIm;
             timerOn = false;
+            document.getElementById("minegrid").style ="margin: 0vw; padding: 2vw; width: 42vw; border-style: none; background-color: crimson";
         }
 
 
