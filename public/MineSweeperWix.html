@@ -17,8 +17,8 @@
 
     .column {
     float: left;
-    width: 2vw;
-    height: 2vw;
+    width: 5vw;
+    height: 5vw;
     padding: 0px;
     box-sizing: border-box;
     }
@@ -33,28 +33,13 @@
 </style>
 
 
-<body>
-    <div class="container">
-        <div class="page-header">
-        <h1 class="bold">Mine Sweeper Game</h1> 
-    </div>
-    <div class="panel panel-primary">
-        <div class="panel-heading">
-            <span class="bold"> Instructions </span>
-        </div>
-        <div class="panel-body">
-            <p>Left click to search</p> 
-            <p>Right click to mark as a mine</p> 
-        </div>
-    </div>
- 
- 
-    <div class="panel panel-primary">
-        <div class="panel-body">
+<body style = "background-color : #E1EEF2;">
+    <div>
+        <div>
             <button type="button" class="btn btn-primary" onclick="resetGrid()">New Game  </button>
             <button type="button" id="timer" class="btn btn-primary disabled">Timer: 00:00</button>
             <p> </p>
-            <div id="minegrid" class="container" style = "margin: 0vw; padding: 0vw; width: 21vw; border-style: none; border-color: red;">
+            <div id="minegrid" class="container" style = "margin: 0vw; padding: 0vw; width: 52vw; border-style: none; border-color: red;">
 
                 <p> place holder text </p>
 
@@ -64,7 +49,7 @@
 
     <footer> 
         <div id="log">
-            <p> log messages here ... </p>
+            <p> </p>
         </div>
 
     </footer>
@@ -81,14 +66,14 @@
         var maxRows = 20;
         var columns = 10;
         var maxColumns = 20;
-        var maxMines = 5;
+        var maxMines = 12;
         var htmlText = "";
         var mineGrid = document.getElementById("minegrid");
         var newCell;
         var im;
         var x,y;
         var grid = new Array(maxRows);
-        var logging = true;
+        var logging = false;
         var depth;
         for (i = 0; i<rows; i++){ grid[i] = new Array(maxColumns);}
 
@@ -139,7 +124,7 @@
             for (var y = 0; y < rows; y++ ) {
                 for (var x = 0; x < columns; x++ ) {
                     let im = grid[x][y];
-                    im.src = "images/unknownSq.jpg";
+                    im.src = "https://static.wixstatic.com/media/657c66_55342b91e84d47deb311d0fa022bf486~mv2.jpg";
 
                     // properties of the cell for the game minesweeper
                     im.finalSrc = ""; // the image of what is in the cell
@@ -170,14 +155,36 @@
             for (var y = 0; y < rows; y++ ) {
                 for (var x = 0; x < columns; x++ ) {
                     let im = grid[x][y];
-                    im.src = "images/unknownSq.jpg";
+                    im.src = "https://static.wixstatic.com/media/657c66_81cdd6e7771c4e03ab6587d03ffeebf6~mv2.jpg";
                     im.initsrc = im.src;
                     if (im.isMine){
-                        im.finalSrc = "images/msq.jpg";
+                        im.finalSrc = "https://static.wixstatic.com/media/657c66_0e01a823d1574589aff62ea55de6aff3~mv2.jpg";
                     }
                     else
                     {
-                        im.finalSrc = "images/"+im.proxCount+"sq.jpg";
+                        switch (im.proxCount) {
+                            case 0: im.finalSrc = "https://static.wixstatic.com/media/657c66_af10d0ecae394625a4a023d807f830ab~mv2.jpg";
+                            break;
+                            case 1: im.finalSrc = "https://static.wixstatic.com/media/657c66_00564e9bead24837893e5ba9c93f8ca1~mv2.jpg";
+                            break;
+                            case 2: im.finalSrc = "https://static.wixstatic.com/media/657c66_83b514b32b244499a5f5145b8fdfb816~mv2.jpg";
+                            break;
+                            case 3: im.finalSrc = "https://static.wixstatic.com/media/657c66_6e6304f6fd054c9b8c80cd524ffa8aea~mv2.jpg";
+                            break;
+                            case 4: im.finalSrc = "https://static.wixstatic.com/media/657c66_55342b91e84d47deb311d0fa022bf486~mv2.jpg";
+                            break;
+                            case 5: im.finalSrc = "https://static.wixstatic.com/media/657c66_b83f57f6297542028400ce6d88326cea~mv2.jpg";
+                            break;
+                            case 6: im.finalSrc = "https://static.wixstatic.com/media/657c66_145e31be62384a2e824ce921f3deea73~mv2.jpg";
+                            break;
+                            case 7: im.finalSrc = "https://static.wixstatic.com/media/657c66_05ba5e39ab3148e6acf83f22d4a34dae~mv2.jpg";
+                            break;
+                            case 8: im.finalSrc = "https://static.wixstatic.com/media/657c66_ac7bb96f629c4270b8453f66469fa7fb~mv2.jpg";
+                            break;
+                            default:
+                        }
+
+                        //im.finalSrc = "images/"+im.proxCount+"sq.jpg";
                     }
                 }
             }
@@ -186,7 +193,7 @@
  
         // grid cell click functions
         function mOver() {
-            if (!event.currentTarget.revealed) event.currentTarget.src = "images/HLBlueSquare.jpg"; 
+            if (!event.currentTarget.revealed) event.currentTarget.src = "https://static.wixstatic.com/media/657c66_a26664b3ec7e46919202220922302b74~mv2.jpg"; 
         }      
         function mOut() {
             if (!event.currentTarget.revealed) event.currentTarget.src = event.currentTarget.initsrc;
@@ -252,7 +259,7 @@
         }
 
         function footlog(text){
-            if (loggin = true) { document.getElementById("log").innerHTML += text; }
+            //if (logging = true) { document.getElementById("log").innerHTML += text; }
         }
 
 
